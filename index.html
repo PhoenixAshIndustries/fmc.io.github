@@ -2,69 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Find Your Rental Car</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-    }
-    label, select, input {
-      display: block;
-      margin-bottom: 1rem;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <h1>Locate Your Rental Car</h1>
+  <div class="container">
+    <h1>Locate Your Rental Car</h1>
 
-  <label for="company">Select Company:</label>
-  <select id="company">
-    <option value="">--Choose--</option>
-    <option value="hertz">Hertz</option>
-    <option value="budget">Budget</option>
-    <option value="avis">Avis</option>
-    <option value="enterprise">Enterprise</option>
-    <option value="national">National</option>
-    <option value="alamo">Alamo</option>
-  </select>
+    <label for="company">Rental Company:</label>
+    <select id="company">
+      <option value="">--Choose--</option>
+      <option value="Enterprise">Enterprise</option>
+      <option value="National">National</option>
+      <option value="Alamo">Alamo</option>
+      <option value="Hertz">Hertz</option>
+      <option value="Budget">Budget</option>
+      <option value="Avis">Avis</option>
+    </select>
 
-  <label for="bay">Enter Bay Number:</label>
-  <input type="text" id="bay" placeholder="e.g. A12" />
+    <label for="bay">Bay Number (e.g. A5):</label>
+    <input type="text" id="bay" placeholder="A5, B12..." />
 
-  <button onclick="navigateToCar()">Get Walking Directions</button>
+    <button id="locateBtn">Get Walking Directions</button>
 
-  <script>
-    // Example bay data (A real app would store more complete info or load from external JSON)
-    const bayCoordinates = {
-      'A12': { lat: 42.3261, lng: -122.8756 },
-      'B5': { lat: 42.3257, lng: -122.8761 },
-      'C3': { lat: 42.3259, lng: -122.8758 }
-    };
-
-    function navigateToCar() {
-      const company = document.getElementById("company").value;
-      const bay = document.getElementById("bay").value.trim().toUpperCase();
-
-      if (!company || !bay) {
-        alert("Please select a company and enter a bay number.");
-        return;
-      }
-
-      const coords = bayCoordinates[bay];
-      if (!coords) {
-        alert("Invalid bay number. Please try again.");
-        return;
-      }
-
-      // Construct the Google Maps walking direction URL
-      const mapUrl = `https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}&travelmode=walking`;
-      window.open(mapUrl, "_blank");
-    }
-  </script>
+    <p id="message"></p>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
