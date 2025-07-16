@@ -1,4 +1,4 @@
-const sheetID = https://docs.google.com/spreadsheets/d/1qiIxuC68w3O6ae9PkhwxuBT3n_sB--57ItLYnvu1dZ0/edit?usp=sharing;
+const sheetID = "1qiIxuC68w3O6ae9PkhwxuBT3n_sB--57ItLYnvu1dZ0";
 const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
 let data = [];
