@@ -1,46 +1,44 @@
-const sheetID = "1tzwoFIGsOFj6J0mZrznMEPZUv5WVOdrNXdSp0U5TVQc";
-const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+document.getElementById("locateBtn").addEventListener("click", function () {
+  const company = document.getElementById("company").value;
+  const bay = document.getElementById("bay").value.trim();
+  const message = document.getElementById("message");
 
-let data = [];
-
-const companySelect = document.getElementById('company');
-const bayInput = document.getElementById('bay');
-const msg = document.getElementById('message');
-
-fetch(sheetURL)
-  .then(res => res.text())
-  .then(txt => {
-    const match = txt.match(/google\.visualization\.Query\.setResponse\((.*)\);/);
-    if (!match) throw new Error("Invalid response format");
-    const json = JSON.parse(match[1]);
-    const rows = json.table.rows;
-    data = rows.map(r => ({
-      bay: r.c[0]?.v?.toString().trim().toUpperCase(),
-      lat: r.c[1]?.v,
-      lng: r.c[2]?.v,
-      company: r.c[3]?.v
-    }));
-  })
-  .catch(() => {
-    msg.textContent = 'Error loading bay data.';
-  });
-
-document.getElementById('locateBtn').addEventListener('click', () => {
-  msg.textContent = '';
-  const bay = bayInput.value.trim().toUpperCase();
-  const comp = companySelect.value;
-
-  if (!comp || !bay) {
-    msg.textContent = 'Select a company and enter bay number.';
+  if (!company || !bay) {
+    message.textContent = "Please select a rental company and enter your spot number.";
     return;
   }
 
-  const rec = data.find(d => d.company === comp && d.bay === bay);
-  if (!rec) {
-    msg.textContent = 'No matching bay found.';
+  // Example coordinates for demonstration
+  const coordinatesMap = {
+    Enterprise: {
+      "101": { lat: 47.6588, lng: -117.4260 },
+      "102": { lat: 47.6590, lng: -117.4262 },
+    },
+    National: {
+      "201": { lat: 47.6601, lng: -117.4271 },
+    },
+    Alamo: {
+      "301": { lat: 47.6612, lng: -117.4282 },
+    },
+    Hertz: {
+      "401": { lat: 47.6623, lng: -117.4293 },
+    },
+    Budget: {
+      "501": { lat: 47.6634, lng: -117.4304 },
+    },
+    Avis: {
+      "601": { lat: 47.6645, lng: -117.4315 },
+    }
+  };
+
+  const companyCoords = coordinatesMap[company];
+  if (!companyCoords || !companyCoords[bay]) {
+    message.textContent = "Location not found. Please check your spot number.";
     return;
   }
 
-  const url = `https://www.google.com/maps/dir/?api=1&destination=${rec.lat},${rec.lng}&travelmode=walking`;
-  window.open(url, '_blank');
+  const { lat, lng } = companyCoords[bay];
+  const mapsUrl = `https://www.google.com/maps/place/${lat},${lng}`;
+
+  window.open(mapsUrl, "_blank");
 });
